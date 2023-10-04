@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{component/config :: config}"></th:block>
+</head>
+<body>
+<div th:replace="~{component/header :: header}"></div>
+<div th:replace="~{component/nav :: nav}"></div>
+<div class="container">
+    <div class="card p-3">
+        <div class="card-title" th:text="${board.boardTitle}"></div>
+        <div class="card-subtitle mb-2 text-body-secondary" th:text="|${board.boardWriter} ${board.boardHits}|"></div>
+        <hr>
+        <div class="card-text" th:text="${board.boardContents}"></div>
+        <div class="text-center">
+            <button class="btn btn-primary">수정</button>
+            <button class="btn btn-secondary" onclick="toList()">목록</button>
+            <button class="btn btn-danger">삭제</button>
+        </div>
+    </div>
+</div>
+<div th:replace="~{component/footer :: footer}"></div>
+</body>
+<script th:inline="javascript">
+    const toList = () => {
+        location.href = "/board";
+    }
+</script>
+</html>

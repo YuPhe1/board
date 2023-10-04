@@ -35,4 +35,9 @@ public class BoardService {
         }
         return boardDTOList;
     }
+
+    public void update(BoardDTO boardDTO) {
+        BoardEntity boardEntity = BoardEntity.toEntity(boardDTO);
+        boardRepository.save(boardEntity);
+    }
 }
