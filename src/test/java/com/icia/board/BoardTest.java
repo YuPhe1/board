@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.stream.IntStream;
+
 @SpringBootTest
 public class BoardTest {
 
@@ -18,6 +20,24 @@ public class BoardTest {
     private BoardService boardService;
     @Autowired
     private BoardRepository boardRepository;
+
+    private BoardDTO newBoardDTO(int i){
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setBoardWriter("test_writer" + i);
+        boardDTO.setBoardPass("test_pass" + i);
+        boardDTO.setBoardTitle("test_title" + i);
+        boardDTO.setBoardContents("test_contents" + i);
+        return boardDTO;
+    }
+
+//    @Test
+//    @DisplayName("글 목록 넣기")
+//    public void dataInsert(){
+//        IntStream.rangeClosed(1, 20).forEach( i -> {
+//            BoardDTO boardDTO = newBoardDTO(i);
+//            boardService.save(boardDTO);
+//        });
+//    }
 
     @Test
     @Transactional
