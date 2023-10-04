@@ -6,19 +6,40 @@
 </head>
 <body>
 <div th:fragment="nav" id="nav">
-    <ul class="menu">
-        <li class="menu-item">
-            <a href="/">index</a>
-        </li>
-        <li class="menu-item">
-            <a href="/board/save">글작성</a>
-        </li>
-        <li class="menu-item">
-            <a href="/board">글목록</a>
-        </li>
-    </ul>
-    <script th:inline="javascript">
-
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+        <div class="container-fluid ms-5 me-5">
+            <a class="navbar-brand" href="/">Board</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board/save">글작성</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/board">글목록</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <select name="type" class="form-select me-2 w-50">
+                        <option value="boardWriter">작성자</option>
+                        <option value="boardTitle">제목</option>
+                    </select>
+                    <input class="form-control me-2 w-auto" type="search" name="q" placeholder="검색어를 입력하세요"
+                           aria-label="Search">
+                    <button class="btn btn-outline-success" type="button">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <script>
+        const search_func = () => {
+            console.log("검색함수");
+        }
     </script>
 </div>
 

@@ -30,9 +30,9 @@ public class BoardService {
     public List<BoardDTO> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAllByOrderByIdDesc();
         List<BoardDTO> boardDTOList = new ArrayList<>();
-        for(BoardEntity boardEntity : boardEntityList){
+        boardEntityList.forEach(boardEntity -> {
             boardDTOList.add(BoardDTO.toDTO(boardEntity));
-        }
+        });
         return boardDTOList;
     }
 

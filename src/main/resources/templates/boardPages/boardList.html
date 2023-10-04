@@ -13,12 +13,14 @@
       <th>글제목</th>
       <th>작성자</th>
       <th>조회수</th>
+      <th>작성일</th>
     </tr>
     <tr th:each="board : ${boardList}">
       <td th:text="${board.id}"></td>
       <td><a th:href="|/board/${board.id}|" th:text="${board.boardTitle}"></a></td>
       <td th:text="${board.boardWriter}"></td>
       <td th:text="${board.boardHits}"></td>
+      <td th:text="${board.createdAt}"></td>
     </tr>
   </table>
 </div>
