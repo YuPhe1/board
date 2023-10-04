@@ -46,15 +46,15 @@
         }
     }
     const delete_check_fn = () => {
-        let area = "<div class='input-group'><span class='input-group-text'>비밀번호</span>"
+        let area = "<div class='input-group mb-2'><span class='input-group-text'>비밀번호</span>"
         area += "<input id='pass' type='password' class='form-control'></div>"
         area += "<div class='text-end'><button class='btn btn-danger' onclick='delete_fn()'>삭제</button></div>"
         checkPassArea.innerHTML = area;
     }
     const update_check_fn = () => {
-        let area = "<div class='input-group'><span class='input-group-text'>비밀번호</span>"
+        let area = "<div class='input-group mb-2'><span class='input-group-text'>비밀번호</span>"
         area += "<input id='pass' type='password' class='form-control'></div>"
-        area += "<div class='text-end'><button class='btn btn-danger' onclick='update_fn()'>수정</button></div>"
+        area += "<div class='text-end'><button class='btn btn-secondary' onclick='update_fn()'>수정</button></div>"
         checkPassArea.innerHTML = area;
     }
 </script>
