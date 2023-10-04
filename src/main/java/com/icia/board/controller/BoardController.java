@@ -78,4 +78,10 @@ public class BoardController {
         else
             return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody BoardDTO boardDTO){
+        boardService.update(boardDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

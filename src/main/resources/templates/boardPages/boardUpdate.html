@@ -27,7 +27,7 @@
             <textarea class="form-control" name="boardContents" th:text="${board.boardContents}"></textarea>
         </div>
         <div class="text-center">
-            <button class="btn btn-primary">수정</button>
+            <button class="btn btn-primary" onclick="update_fn()">수정</button>
             <button type="button" class="btn btn-secondary" onclick="cancel_fn()">취소</button>
         </div>
     </form>
@@ -36,6 +36,29 @@
 </body>
 <script>
     const id = [[${board.id}]];
+    const update_fn = () => {
+        const boardPass = document.board.boardPass.value;
+        const boardHits = document.board.boardHits.value;
+        const boardTitle = document.board.boardTitle.value;
+        const boardWriter = document.board.boardWriter.value;
+        const boardContents = document.board.boardContents.value;
+        axios({
+            method: "put",
+            url: `/board/${id}`,
+            data: {
+                id: id,
+                boardPass: boardPass,
+                boardHits: boardHits,
+                boardTitle: boardTitle,
+                boardWriter: boardWriter,
+                boardContents: boardContents
+            }
+        }).then(res => {
+            location.href = `/board/${id}`;
+        }).catch(err => {
+            alert("수정실패")
+        })
+    };
     const cancel_fn = () => {
         location.href = `/board/${id}`;
     }
