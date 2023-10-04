@@ -11,19 +11,51 @@
         <div class="card-title" th:text="${board.boardTitle}"></div>
         <div class="card-subtitle mb-2 text-body-secondary" th:text="|${board.boardWriter} ${board.boardHits}|"></div>
         <hr>
-        <div class="card-text" th:text="${board.boardContents}"></div>
-        <div class="text-center">
-            <button class="btn btn-primary">수정</button>
+        <div class="card-text mb-3" th:text="${board.boardContents}"></div>
+        <div class="text-center mb-3">
+            <button class="btn btn-primary" onclick="update_check_fn()">수정</button>
             <button class="btn btn-secondary" onclick="toList()">목록</button>
-            <button class="btn btn-danger">삭제</button>
+            <button class="btn btn-danger" onclick="delete_check_fn()">삭제</button>
         </div>
+        <div id="check-pass-area"></div>
     </div>
 </div>
 <div th:replace="~{component/footer :: footer}"></div>
 </body>
 <script th:inline="javascript">
+    const checkPassArea = document.querySelector("#check-pass-area");
+    const id = [[${board.id}]]
+    const passDB = [[${board.boardPass}]];
     const toList = () => {
         location.href = "/board";
+    }
+    const delete_fn = () => {
+        const pass = document.querySelector("#pass").value;
+        if (pass == passDB) {
+            location.href = `/board/delete/${id}`;
+        } else {
+            alert("비밀번호가 틀렸습니다.");
+        }
+    }
+    const update_fn = () => {
+        const pass = document.querySelector("#pass").value;
+        if (pass == passDB) {
+            location.href = `/board/update/${id}`;
+        } else {
+            alert("비밀번호가 틀렸습니다.");
+        }
+    }
+    const delete_check_fn = () => {
+        let area = "<div class='input-group'><span class='input-group-text'>비밀번호</span>"
+        area += "<input id='pass' type='password' class='form-control'></div>"
+        area += "<div class='text-end'><button class='btn btn-danger' onclick='delete_fn()'>삭제</button></div>"
+        checkPassArea.innerHTML = area;
+    }
+    const update_check_fn = () => {
+        let area = "<div class='input-group'><span class='input-group-text'>비밀번호</span>"
+        area += "<input id='pass' type='password' class='form-control'></div>"
+        area += "<div class='text-end'><button class='btn btn-danger' onclick='update_fn()'>수정</button></div>"
+        checkPassArea.innerHTML = area;
     }
 </script>
 </html>

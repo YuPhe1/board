@@ -46,6 +46,11 @@ public class BoardController {
         } catch (NoSuchElementException e){
             return "boardPages/notFound";
         }
+    }
 
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id){
+        boardService.delete(id);
+        return "redirect:/board";
     }
 }
