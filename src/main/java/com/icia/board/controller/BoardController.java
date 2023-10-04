@@ -3,6 +3,8 @@ package com.icia.board.controller;
 import com.icia.board.dto.BoardDTO;
 import com.icia.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -64,5 +66,16 @@ public class BoardController {
     public String update(@ModelAttribute BoardDTO boardDTO){
         boardService.update(boardDTO);
         return "redirect:/board/" + boardDTO.getId();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable("id") Long id, @RequestParam("boardPass") String boardPass){
+        BoardDTO boardDTO = boardService.findById(id);
+        if(boardDTO.getBoardPass().equals(boardPass)) {
+            boardService.delete(id);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 }

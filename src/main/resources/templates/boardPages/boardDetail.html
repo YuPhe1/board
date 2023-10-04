@@ -6,7 +6,7 @@
 <body>
 <div th:replace="~{component/header :: header}"></div>
 <div th:replace="~{component/nav :: nav}"></div>
-<div class="container">
+<div class="container my-3">
     <div class="card p-3">
         <div class="card-title" th:text="${board.boardTitle}"></div>
         <div class="row">
@@ -40,12 +40,17 @@
     }
     const delete_fn = () => {
         const pass = document.querySelector("#pass").value;
-        if (pass == passDB) {
-            location.href = `/board/delete/${id}`;
-        } else {
+        axios({
+            method:"delete",
+            url:`/board/${id}`,
+            params:{boardPass: pass}
+        }).then(res => {
+            location.href = "/board"
+        }).catch(err => {
             alert("비밀번호가 틀렸습니다.");
-        }
-    }
+            document.querySelector("#pass").focus();
+        });
+    };
     const update_fn = () => {
         const pass = document.querySelector("#pass").value;
         if (pass == passDB) {
