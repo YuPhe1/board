@@ -4,7 +4,9 @@ import com.icia.board.dto.BoardDTO;
 import com.icia.board.entity.BoardEntity;
 import com.icia.board.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class BoardService {
     }
 
     public List<BoardDTO> findAll() {
-        List<BoardEntity> boardEntityList = boardRepository.findAllByOrderByIdDesc();
+        List<BoardEntity> boardEntityList = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         List<BoardDTO> boardDTOList = new ArrayList<>();
         boardEntityList.forEach(boardEntity -> {
             boardDTOList.add(BoardDTO.toDTO(boardEntity));
@@ -43,5 +45,10 @@ public class BoardService {
 
     public void delete(Long id){
         boardRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void increaseHits(Long id) {
+        boardRepository.increaseHits(id);
     }
 }

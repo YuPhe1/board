@@ -40,9 +40,8 @@ public class BoardController {
     @GetMapping("/{id}")
     public String detail(@PathVariable("id") Long id, Model model){
         try {
+            boardService.increaseHits(id);
             BoardDTO boardDTO = boardService.findById(id);
-            boardDTO.setBoardHits(boardDTO.getBoardHits() + 1);
-            boardService.update(boardDTO);
             model.addAttribute("board", boardDTO);
             return "boardPages/boardDetail";
         } catch (NoSuchElementException e){
