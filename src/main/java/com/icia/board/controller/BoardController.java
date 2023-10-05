@@ -3,6 +3,7 @@ package com.icia.board.controller;
 import com.icia.board.dto.BoardDTO;
 import com.icia.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,10 +31,26 @@ public class BoardController {
         return "redirect:/board";
     }
 
+    /*
+        rest api
+     */
     @GetMapping
-    public String findAll(Model model) {
-        List<BoardDTO> boardDTOList = boardService.findAll();
+    public String findAll(Model model,
+                          @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        Page<BoardDTO> boardDTOList = boardService.findAll(page);
         model.addAttribute("boardList", boardDTOList);
+        // 목록 하단에 보여줄 페이지 번호
+        int blockLimit = 3;
+        int startPage = (((int) (Math.ceil((double) page / blockLimit))) - 1) * blockLimit + 1;
+        int endPage = ((startPage + blockLimit - 1) < boardDTOList.getTotalPages()) ? startPage + blockLimit - 1 : boardDTOList.getTotalPages();
+//        if ((startPage + blockLimit - 1) < boardDTOList.getTotalPages()) {
+//            endPage = startPage + blockLimit - 1;
+//        } else {
+//            endPage = boardDTOS.getTotalPages();
+//        }
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
         return "boardPages/boardList";
     }
 
