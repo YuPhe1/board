@@ -16,15 +16,15 @@
             </div>
             <div class="col-6 text-end">
                 <div class="card-subtitle mb-2 text-body-secondary"
-                th:text="|작성자: ${board.boardHits} 작성일: ${board.createdAt}|"></div>
+                     th:text="|작성자: ${board.boardHits} 작성일: ${board.createdAt}|"></div>
             </div>
         </div>
         <hr>
         <div class="card-text mb-3" th:text="${board.boardContents}"></div>
         <div class="text-center mb-3">
-            <button class="btn btn-primary" onclick="update_check_fn()">수정</button>
+            <button class="btn btn-primary" onclick="req_fn('update')">수정</button>
             <button class="btn btn-secondary" onclick="toList()">목록</button>
-            <button class="btn btn-danger" onclick="delete_check_fn()">삭제</button>
+            <button class="btn btn-danger" onclick="req_fn('delete')">삭제</button>
         </div>
         <div id="check-pass-area"></div>
     </div>
@@ -37,39 +37,32 @@
     const passDB = [[${board.boardPass}]];
     const toList = () => {
         location.href = "/board";
-    }
-    const delete_fn = () => {
-        const pass = document.querySelector("#pass").value;
-        axios({
-            method:"delete",
-            url:`/board/${id}`,
-            params:{boardPass: pass}
-        }).then(res => {
-            location.href = "/board"
-        }).catch(err => {
-            alert("비밀번호가 틀렸습니다.");
-            document.querySelector("#pass").focus();
-        });
     };
-    const update_fn = () => {
+    const req_fn = (type) => {
+        let area = "<div class='input-group mb-2'><span class='input-group-text'>비밀번호</span>"
+        area += "<input id='pass' type='password' class='form-control'></div>"
+        area += `<div class="text-end"><button class="btn btn-secondary" onclick="pass_check('${type}')">확인</button></div>`
+        checkPassArea.innerHTML = area;
+    };
+    const pass_check = (type) => {
+        console.log("type: " + type);
         const pass = document.querySelector("#pass").value;
         if (pass == passDB) {
-            location.href = `/board/update/${id}`;
+            if(type == "update"){
+                location.href = `/board/update/${id}`;
+            } else if (type == "delete") {
+                axios({
+                    method: "delete",
+                    url: `/board/${id}`
+                }).then(res => {
+                    location.href = "/board"
+                }).catch(err => {
+                    alert("삭제실패");
+                });
+            }
         } else {
             alert("비밀번호가 틀렸습니다.");
         }
-    }
-    const delete_check_fn = () => {
-        let area = "<div class='input-group mb-2'><span class='input-group-text'>비밀번호</span>"
-        area += "<input id='pass' type='password' class='form-control'></div>"
-        area += "<div class='text-end'><button class='btn btn-danger' onclick='delete_fn()'>삭제</button></div>"
-        checkPassArea.innerHTML = area;
-    }
-    const update_check_fn = () => {
-        let area = "<div class='input-group mb-2'><span class='input-group-text'>비밀번호</span>"
-        area += "<input id='pass' type='password' class='form-control'></div>"
-        area += "<div class='text-end'><button class='btn btn-secondary' onclick='update_fn()'>수정</button></div>"
-        checkPassArea.innerHTML = area;
     }
 </script>
 </html>
