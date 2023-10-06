@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -41,8 +42,11 @@ public class BoardTest {
     @DisplayName("글 목록 넣기")
     public void dataInsert(){
         IntStream.rangeClosed(1, 50).forEach( i -> {
-            BoardDTO boardDTO = newBoardDTO(i);
-            boardService.save(boardDTO);
+            try {
+                boardService.save(newBoardDTO(i));
+            } catch (IOException e){
+
+            }
         });
     }
 
@@ -84,7 +88,7 @@ public class BoardTest {
     @Transactional
     @Rollback(value = true)
     @DisplayName("글작성")
-    public void boardSaveTest(){
+    public void boardSaveTest() throws IOException {
         BoardDTO boardDTO = new BoardDTO();
         boardDTO.setBoardWriter("test_writer");
         boardDTO.setBoardPass("test_pass");

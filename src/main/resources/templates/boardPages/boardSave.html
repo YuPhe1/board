@@ -7,7 +7,7 @@
 <div th:replace="~{component/header :: header}"></div>
 <div th:replace="~{component/nav :: nav}"></div>
 <div class="container my-3">
-    <form name="board" action="/board/save" method="post">
+    <form name="board" action="/board/save" method="post" enctype="multipart/form-data">
         <div class="input-group mb-3">
             <span class="input-group-text">
                 글제목
@@ -28,6 +28,9 @@
         </div>
         <div class="input-group mb-3">
             <textarea class="form-control" name="boardContents"></textarea>
+        </div>
+        <div class="input-group mb-3">
+            <input type="file" name="boardFile" class="form-control">
         </div>
         <div class="text-center">
             <button class="btn btn-primary">작성</button>
