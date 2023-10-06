@@ -22,11 +22,9 @@ public class CommentController {
 
     @PostMapping("/save")
     public ResponseEntity save(@RequestBody CommentDTO commentDTO){
-        System.out.println("commentDTO = " + commentDTO);
         try {
             commentService.save(commentDTO);
             List<CommentDTO> commentDTOList = commentService.findByBoardId(commentDTO.getBoardId());
-            System.out.println("commentDTOList = " + commentDTOList);
             return new ResponseEntity(commentDTOList, HttpStatus.OK);
         } catch (NoSuchElementException e){
             return new ResponseEntity(HttpStatus.CONFLICT);
