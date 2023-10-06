@@ -57,6 +57,7 @@ public class BoardService {
         }
     }
 
+    @Transactional
     public BoardDTO findById(Long id) {
         BoardEntity boardEntity = boardRepository.findById(id).orElseThrow(() -> new NoSuchElementException());
         return BoardDTO.toDTO(boardEntity);
@@ -99,6 +100,11 @@ public class BoardService {
         boardRepository.deleteById(id);
     }
 
+    /**
+     * 서비스 클래스 메서드에서 @Transactional 붙이는 경우
+     * 1. jpql로 작성한 메서드 호출할 때
+     * 2. 부모엔티티에서 자식엔티티를 바로 호출할 때
+     */
     @Transactional
     public void increaseHits(Long id) {
         boardRepository.increaseHits(id);

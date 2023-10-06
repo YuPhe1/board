@@ -36,15 +36,14 @@ public class BoardDTO {
         boardDTO.setBoardHits(boardEntity.getBoardHits());
         boardDTO.setCreatedAt(UtilClass.dateTimeFormat(boardEntity.getCreatedAt()));
 
-//        BoardDTO boardDTO = BoardDTO.builder()
-//                .id(boardEntity.getId())
-//                .boardWriter(boardEntity.getBoardWriter())
-//                .boardTitle(boardEntity.getBoardTitle())
-//                .boardPass(boardEntity.getBoardPass())
-//                .boardContents(boardEntity.getBoardContents())
-//                .boardHits(boardEntity.getBoardHits())
-//                .createdAt(UtilClass.dateTimeFormat((boardEntity.getCreatedAt())))
-//                .build();
+        // 파일 첨부 여부에 따라 파일이름 가져가기
+        if(boardEntity.getFileAttached() == 1){
+            boardDTO.setFileAttached(1);
+            boardDTO.setOriginalFileName(boardEntity.getBoardFileEntityList().get(0).getOriginalFileName());
+            boardDTO.setStoredFileName(boardEntity.getBoardFileEntityList().get(0).getStoredFileName());
+        } else {
+            boardDTO.setFileAttached(0);
+        }
         return boardDTO;
     }
 }
