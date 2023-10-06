@@ -51,10 +51,10 @@ public class BoardDTO {
         } else {
             boardDTO.setFileAttached(0);
         }
-        for (CommentEntity commentEntity : boardEntity.getCommentEntityList()){
+        boardEntity.getCommentEntityList().forEach(commentEntity -> {
             CommentDTO commentDTO = CommentDTO.toDTO(commentEntity);
             boardDTO.getCommentDTOList().add(commentDTO);
-        }
+        });
         return boardDTO;
     }
 }

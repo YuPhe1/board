@@ -29,9 +29,9 @@ public class CommentService {
         BoardEntity boardEntity = boardRepository.findById(boardId).orElseThrow(() -> new NoSuchElementException());
         List<CommentEntity> commentEntityList = commentRepository.findByBoardEntity(boardEntity);
         List<CommentDTO> commentDTOList = new ArrayList<>();
-        for(CommentEntity commentEntity : commentEntityList) {
+        commentEntityList.forEach(commentEntity -> {
             commentDTOList.add(CommentDTO.toDTO(commentEntity));
-        }
+        });
         return commentDTOList;
     }
 }
