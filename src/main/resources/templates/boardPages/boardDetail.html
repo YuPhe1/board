@@ -32,6 +32,30 @@
             <button class="btn btn-danger" onclick="req_fn('delete')">삭제</button>
         </div>
         <div id="check-pass-area"></div>
+        <div class="card p-3">
+            <div id="comment-area">
+                <div class="card p-3 mb-2" th:each="comment : ${board.commentDTOList}">
+                    <div class="card-title mb-2" th:text="${comment.commentWriter}"></div>
+                    <hr>
+                    <div class="card-text mb-2" th:text="${comment.commentContents}"></div>
+                    <div class="card-subtitle text-end" th:text="${comment.createdAt}"></div>
+                </div>
+            </div>
+            <div class="card p-3 mb-2">
+                <form name="comment-save" action="/comment/save" method="post">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">작성자</span>
+                        <input class="form-control" name="commentWriter">
+                    </div>
+                    <div class="input-group mb-3">
+                        <textarea class="form-control" rows="3" name="commentContents" placeholder="댓글 내용"></textarea>
+                    </div>
+                    <div class="text-end">
+                        <button class="btn btn-secondary">등록</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 <div th:replace="~{component/footer :: footer}"></div>
@@ -40,6 +64,34 @@
     const checkPassArea = document.querySelector("#check-pass-area");
     const id = [[${board.id}]]
     const passDB = [[${board.boardPass}]];
+
+    document.querySelector('[name="comment-save"]').addEventListener("submit", e => {
+        e.preventDefault();
+        const commentWriter = document.querySelector('[name="commentWriter"]').value;
+        const commentContents = document.querySelector('[name="commentContents"]').value;
+        axios({
+            method: "post",
+            url: "/comment/save",
+            data: {
+                commentWriter: commentWriter,
+                commentContents: commentContents,
+                boardId: id
+            }
+        }).then(res => {
+            const commentArea = document.querySelector("#comment-area");
+            let result = "";
+            for (let i in res.data) {
+                result += "<div class='card p-3 mb-2'>";
+                result += "<div class='card-title mb-2'>"+res.data[i].commentWriter+"</div><hr>";
+                result += "<div class='card-text mb-2'>"+res.data[i].commentContents+"</div>";
+                result += "<div class='card-subtitle text-end'>"+res.data[i].createdAt+"</div>";
+                result += "</div>";
+            }
+            commentArea.innerHTML = result;
+        }).catch(err => {
+            alert("댓글 작성 실패");
+        })
+    })
     const toList = () => {
         const page = [[${page}]];
         const type = [[${type}]];
@@ -56,7 +108,7 @@
         console.log("type: " + type);
         const pass = document.querySelector("#pass").value;
         if (pass == passDB) {
-            if(type == "update"){
+            if (type == "update") {
                 location.href = `/board/update/${id}`;
             } else if (type == "delete") {
                 axios({
