@@ -36,9 +36,10 @@ public class BoardController {
      */
     @GetMapping
     public String findAll(Model model,
-                          @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
-        Page<BoardDTO> boardDTOList = boardService.findAll(page);
-        model.addAttribute("boardList", boardDTOList);
+                          @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                          @RequestParam(value = "type", required = false, defaultValue = "boardTitle") String type,
+                          @RequestParam(value = "q", required = false, defaultValue = "") String q) {
+        Page<BoardDTO> boardDTOList = boardService.findAll(page, type, q);
         // 목록 하단에 보여줄 페이지 번호
         int blockLimit = 3;
         int startPage = (((int) (Math.ceil((double) page / blockLimit))) - 1) * blockLimit + 1;
@@ -48,18 +49,27 @@ public class BoardController {
 //        } else {
 //            endPage = boardDTOS.getTotalPages();
 //        }
+        model.addAttribute("boardList", boardDTOList);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-
+        model.addAttribute("page", page);
+        model.addAttribute("type", type);
+        model.addAttribute("q", q);
         return "boardPages/boardList";
     }
 
     @GetMapping("/{id}")
-    public String detail(@PathVariable("id") Long id, Model model) {
+    public String findById(@PathVariable("id") Long id, Model model,
+                           @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                           @RequestParam(value = "type", required = false, defaultValue = "boardTitle") String type,
+                           @RequestParam(value = "q", required = false, defaultValue = "") String q) {
         try {
             boardService.increaseHits(id);
             BoardDTO boardDTO = boardService.findById(id);
             model.addAttribute("board", boardDTO);
+            model.addAttribute("page", page);
+            model.addAttribute("type", type);
+            model.addAttribute("q", q);
             return "boardPages/boardDetail";
         } catch (NoSuchElementException e) {
             return "boardPages/notFound";

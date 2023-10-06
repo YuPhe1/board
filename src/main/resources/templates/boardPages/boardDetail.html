@@ -36,7 +36,10 @@
     const id = [[${board.id}]]
     const passDB = [[${board.boardPass}]];
     const toList = () => {
-        location.href = "/board";
+        const page = [[${page}]];
+        const type = [[${type}]];
+        const q = [[${q}]];
+        location.href = `/board?page=${page}&type=${type}&q=${q}`;
     };
     const req_fn = (type) => {
         let area = "<div class='input-group mb-2'><span class='input-group-text'>비밀번호</span>"
